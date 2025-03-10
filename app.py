@@ -18,7 +18,7 @@ DB_PASSWORD = "CpzGBWAJFlrVNFgiKJuhiXHPyaTklfcM"
 DB_HOST = "mysql-production-671b.up.railway.app"
 DB_PORT = "3306"
 DB_NAME = "railway"
-DATABASE_URL = f"mysql+mysqlconnector://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+DATABASE_URL = f"mysql+mysqlconnector://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URL
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 # ✅ Khởi tạo SQLAlchemy
@@ -58,16 +58,15 @@ def get_conversation_history():
 # ✅ Lưu tin nhắn vào database (chuyển về UTF-8 trước khi lưu)
 def save_message(user_message, bot_reply):
     try:
-        # Chắc chắn rằng dữ liệu là chuỗi Unicode trước khi lưu
-        user_message = str(user_message)
-        bot_reply = str(bot_reply)
+        user_message = str(user_message).encode("utf-8", "ignore").decode("utf-8")
+        bot_reply = str(bot_reply).encode("utf-8", "ignore").decode("utf-8")
+
         new_conv = Conversation(user_message=user_message, bot_reply=bot_reply)
         db.session.add(new_conv)
         db.session.commit()
     except Exception as e:
         db.session.rollback()
         print(f"❌ Lỗi khi lưu vào database: {e}")
-
 
 # ✅ Lấy toàn bộ lịch sử hội thoại
 @app.route("/history", methods=["GET"])
