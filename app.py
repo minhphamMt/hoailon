@@ -14,13 +14,13 @@ app.secret_key = os.urandom(24)
 
 # 🔥 Cấu hình kết nối SQL Server qua pyodbc
 DB_USERNAME = "root"
-DB_PASSWORD = "YRdlpsKbwapkgrBqFOSJltJuvChzyHpR"
-DB_HOST = "mysql.railway.internal"
+DB_PASSWORD = "CpzGBWAJFlrVNFgiKJuhiXHPyaTklfcM"
+DB_HOST = "mysql-production-671b.up.railway.app"
 DB_PORT = "3306"
 DB_NAME = "railway"
-app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+pymysql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+DATABASE_URL = f"mysql+mysqlconnector://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URL
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-
 # ✅ Khởi tạo SQLAlchemy
 db = SQLAlchemy(app)
 
